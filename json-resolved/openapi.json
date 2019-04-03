@@ -2,19 +2,15 @@
   "openapi" : "3.0.0",
   "info" : {
     "title" : "Hankeikkunan VAHVA-asianhallintaa palveleva rajapinta",
-    "description" : "# Esittely\nTällä rajapinnalla VAHVA-asianhallintajärjestelmä käynnistää uuden kohteen lisäämisen Hankeikkunaan ja hallinnoi liitoksen sisältöä.\nHankeikkuna hakee VAHVAn \"yleisrajapinnasta\" välitettyjen tunnisteiden avulla tarvitsemansa tiedot asioista, asiakirjoista ja tiedostoista.\nHankeikkunan pitää varautua siihen, että liitoksen päivityksen yhteydessä tiedostoja voidaan lisätä tai poistaa Hankeikkunasta.\n# TODO / huomioita ja kysymyksiä\n* Rajapinta on nyt suomeksi - Hankeikkunan tietomalli on suomeksi. Voisi olla myös englanniksi.\n* Kohdetyyppien kooditus on esimerkeissä keksitty.\n# Muutosloki\n* Lisätty GET /api/v1/vahva-sidos/{caseRecno} -hakuun mahdollisuus hakea myös (migratoidun) asian diaarinumerolla. Tämä mahdollistaa auttavan VAHVA-Hankeikkuna -linkityksen tekemisen myös migratoiduille asioille / Riku Sarlin 2018-08-15\n* Poistettu session-käsittely / Riku Sarlin 2018-08-20 => basic auth\n",
+    "description" : "# Esittely\nTällä rajapinnalla VAHVA-asianhallintajärjestelmä käynnistää uuden kohteen lisäämisen Hankeikkunaan ja hallinnoi liitoksen sisältöä.\nHankeikkuna hakee VAHVAn \"yleisrajapinnasta\" välitettyjen tunnisteiden avulla tarvitsemansa tiedot asioista, asiakirjoista ja tiedostoista.\nHankeikkunan pitää varautua siihen, että liitoksen päivityksen yhteydessä tiedostoja voidaan lisätä tai poistaa Hankeikkunasta.\n# TODO / huomioita ja kysymyksiä\n* Rajapinta on nyt suomeksi - Hankeikkunan tietomalli on suomeksi. Voisi olla myös englanniksi.\n* Kohdetyyppien kooditus on esimerkeissä keksitty.\n# Muutosloki\n* Lisätty GET /api/v1/vahva-sidos/{caseRecno} -hakuun mahdollisuus hakea myös (migratoidun) asian diaarinumerolla. Tämä mahdollistaa auttavan VAHVA-Hankeikkuna -linkityksen tekemisen myös migratoiduille asioille / Riku Sarlin 2018-08-15\n* Poistettu session-käsittely / Riku Sarlin 2018-08-20 => basic auth\n* Päivitetty HTTP-virhekoodit ja virheiden kuvaukset. / Lasse Laasonen 2019-03-13 * AsiaJulkaisuTapa ja AsiakirjaJulkaisuTapa vaihtoehdot päivitetty. / Lasse Laasonen 2019-03-13\n* Uudelleennimetty AsiakirjaSidos tyypin kentät asiakirjaRecno ja fileId --> recordRecno ja documentRecno  2019-03-28\n",
     "contact" : {
-      "email" : "riku.sarlin@vnk.fi"
-    },
-    "license" : {
-      "name" : "Apache 2.0",
-      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+      "email" : "lasse.laasonen@ambientia.fi"
     },
     "version" : "1.0.0"
   },
   "servers" : [ {
-    "url" : "https://virtserver.swaggerhub.com/rikusarlin/hankeikkunaVahva/1.0.0",
-    "description" : "SwaggerHub API Auto Mocking"
+    "url" : "https://hankeikkuna-test.vnv.fi/delegate/vahva",
+    "description" : "Hankeikkuna test"
   } ],
   "security" : [ {
     "basicAuth" : [ ]
@@ -24,19 +20,9 @@
       "get" : {
         "summary" : "Hae Hankeikkunan kohdetyypit ja kohteen tarkenteet halutulla kielellä",
         "parameters" : [ {
-          "name" : "sessionKey",
-          "in" : "query",
-          "description" : "API-istunnon tunniste",
-          "required" : true,
-          "style" : "form",
-          "explode" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
           "name" : "kieli",
           "in" : "path",
-          "description" : "Kieli, jolla tiedot halutaan",
+          "description" : "Kieli, jolla tiedot halutaan. Vaihtoehdot: fi,sv",
           "required" : true,
           "style" : "simple",
           "explode" : false,
@@ -55,21 +41,14 @@
               }
             }
           },
-          "403" : {
+          "401" : {
             "description" : "Tunnistautuminen ei onnistunut"
           },
           "404" : {
             "description" : "Tietoja ei löydy halutulla kielellä"
           },
           "500" : {
-            "description" : "Virhe kutsun suorituksen aikana, virheilmoituksessa tarkempi kuvaus",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Virhe"
-                }
-              }
-            }
+            "description" : "Odottamaton virhe kutsun suorituksen aikana"
           }
         }
       }
@@ -109,96 +88,18 @@
               }
             }
           },
-          "403" : {
+          "401" : {
             "description" : "Tunnistautuminen ei onnistunut"
           },
           "404" : {
             "description" : "Sidosta ei ole"
           },
-          "405" : {
-            "description" : "Virheellinen syöte, virheilmoituksessa tarkempi kuvaus",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Virhe"
-                }
-              }
-            }
-          },
           "500" : {
-            "description" : "Virhe kutsun suorituksen aikana, virheilmoituksessa tarkempi kuvaus",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Virhe"
-                }
-              }
-            }
+            "description" : "Odottamaton virhe kutsun suorituksen aikana"
           }
         }
       },
       "put" : {
-        "summary" : "Tee uusi VAHVA-Hankeikkuna -sidos. Luo Hankeikkunaan uuden hankkeen.\nHankeikkuna lukee saamiensa tietojen perusteella VAHVAsta asian tietoja, asian asiakirjojen tietoja ja tiedostoja ja vie nämä Hankeikkunaan. Lopputuloksena Hankeikkunaan on luotu uusi kohde. \n",
-        "parameters" : [ {
-          "name" : "caseRecno",
-          "in" : "path",
-          "description" : "VAHVAn asian tekninen tunniste, Case.recno",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/VahvaSidos"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "200" : {
-            "description" : "Sidoksen tiedot - kohdetyyppi, tarkenne ja liitettävien tiedostojen tunnisteet ja aikaleimat",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/VahvaSidos"
-                }
-              }
-            }
-          },
-          "403" : {
-            "description" : "Tunnistautuminen ei onnistunut"
-          },
-          "404" : {
-            "description" : "Sidosta ei ole"
-          },
-          "405" : {
-            "description" : "Virheellinen syöte, virheilmoituksessa tarkempi kuvaus",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Virhe"
-                }
-              }
-            }
-          },
-          "500" : {
-            "description" : "Virhe kutsun suorituksen aikana, virheilmoituksessa tarkempi kuvaus",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Virhe"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post" : {
         "summary" : "Päivitä VAHVA-Hankeikkuna -sidoksen tiedot.\nPäivityksen yhteydessä liitettyjä asiakirjoja voidaan lisätä tai poistaa.\n",
         "parameters" : [ {
           "name" : "caseRecno",
@@ -231,31 +132,64 @@
               }
             }
           },
-          "403" : {
+          "401" : {
             "description" : "Tunnistautuminen ei onnistunut"
           },
           "404" : {
             "description" : "Sidosta ei ole"
           },
-          "405" : {
-            "description" : "Virheellinen syöte, virheilmoituksessa tarkempi kuvaus",
+          "422" : {
+            "description" : "Virheellinen syöte, virheilmoituksessa tarkempi kuvaus"
+          },
+          "500" : {
+            "description" : "Odottamaton virhe kutsun suorituksen aikana"
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Tee uusi VAHVA-Hankeikkuna -sidos. Luo Hankeikkunaan uuden hankkeen.\nHankeikkuna lukee saamiensa tietojen perusteella VAHVAsta asian tietoja, asian asiakirjojen tietoja ja tiedostoja ja vie nämä Hankeikkunaan. Lopputuloksena Hankeikkunaan on luotu uusi kohde. \n",
+        "parameters" : [ {
+          "name" : "caseRecno",
+          "in" : "path",
+          "description" : "VAHVAn asian tekninen tunniste, Case.recno",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/VahvaSidos"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Sidoksen tiedot - kohdetyyppi, tarkenne ja liitettävien tiedostojen tunnisteet ja aikaleimat",
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Virhe"
+                  "$ref" : "#/components/schemas/VahvaSidos"
                 }
               }
             }
           },
+          "401" : {
+            "description" : "Tunnistautuminen ei onnistunut"
+          },
+          "409" : {
+            "description" : "Sidos on jo olemassa annetulla tunnisteella"
+          },
+          "422" : {
+            "description" : "Virheellinen syöte, virheilmoituksessa tarkempi kuvaus"
+          },
           "500" : {
-            "description" : "Virhe kutsun suorituksen aikana, virheilmoituksessa tarkempi kuvaus",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Virhe"
-                }
-              }
-            }
+            "description" : "Odottamaton virhe kutsun suorituksen aikana"
           }
         }
       }
@@ -375,6 +309,10 @@
             "type" : "string",
             "description" : "Linkki hankeikkunan kohteeseen Hankeikkunan käyttöliittymässä"
           },
+          "tunnus" : {
+            "type" : "string",
+            "description" : "Kohteen tunnus Hankeikkunassa"
+          },
           "asiaJulkaisuTapa" : {
             "$ref" : "#/components/schemas/AsiaJulkaisuTapa"
           },
@@ -389,6 +327,7 @@
           "kohdeTyyppiKoodi" : 2,
           "kohdeAliTyyppiKoodi" : 103,
           "url" : "https://hankeikkuna.vnv.fi/app#/hanke/30509/kuvaukset",
+          "tunnus" : "VNK005:00/2019",
           "asiaJulkaisuTapa" : "sisäinenJaUlkoinen",
           "asiakirjat" : [ {
             "asiakirjaRecno" : 4218623,
@@ -411,13 +350,13 @@
       "AsiakirjaSidos" : {
         "type" : "object",
         "properties" : {
-          "asiakirjaRecno" : {
+          "recordRecno" : {
             "type" : "string",
-            "description" : "VAHVAn asiakirjan tekninen tunniste, Document.recno"
+            "description" : "VAHVAn asiakirjan tekninen tunniste, Record.recno"
           },
-          "fileId" : {
+          "documentRecno" : {
             "type" : "string",
-            "description" : "VAHVAn tiedoston tekninen tunniste"
+            "description" : "VAHVAn tiedoston tekninen tunniste, Document.recno"
           },
           "muutosAikaleima" : {
             "type" : "string",
@@ -429,42 +368,15 @@
           }
         }
       },
-      "Virhe" : {
-        "type" : "object",
-        "properties" : {
-          "virheet" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/VirheTiedot"
-            }
-          }
-        }
-      },
-      "VirheTiedot" : {
-        "type" : "object",
-        "properties" : {
-          "virheKoodi" : {
-            "type" : "string"
-          },
-          "virheViesti" : {
-            "type" : "string"
-          }
-        },
-        "description" : "Virheen koodi ja selite",
-        "example" : {
-          "virheKoodi" : 123,
-          "virheViesti" : "Kohdetyypin tarkenne ei ole sallittu tällä kohdetyypillä"
-        }
-      },
       "AsiaJulkaisuTapa" : {
         "type" : "string",
         "description" : "tieto, joka kontrolloi asian julkaisua - minne julkaistaan (sisäisesti vaiko myös julkiseen verkkoon)",
-        "enum" : [ "sisäinen", "ulkoinen", "sisäinenJaUlkoinen", "peruttu" ]
+        "enum" : [ "sisäinen", "sisäinenJaUlkoinen", "peruttu" ]
       },
       "AsiakirjaJulkaisuTapa" : {
         "type" : "string",
         "description" : "tieto, joka kontrolloi asiakirjan julkaisua - minne julkaistaan (sisäisesti vaiko myös julkiseen verkkoon), ja julkaistaanko koko asiakirja vai pelkät metatiedot asiakirjasta",
-        "enum" : [ "sisäinen", "ulkoinen", "sisäinenJaUlkoinen", "sisäinenVainMetatiedot", "ulkoinenVainMetatiedot", "sisäinenJaUlkoinenVainMetatiedot", "sisäinenUlkoisestiVainMetatiedot", "peruttu" ]
+        "enum" : [ "sisäinen", "sisäinenJaUlkoinen", "sisäinenVainMetatiedot", "sisäinenJaUlkoinenVainMetatiedot", "sisäinenUlkoisestiVainMetatiedot", "peruttu" ]
       },
       "KohdeTyyppi_kohdeTyypinTarkenteet" : {
         "type" : "object",
