@@ -2,7 +2,7 @@
   "openapi" : "3.0.0",
   "info" : {
     "title" : "Hankeikkunan VAHVA-asianhallintaa palveleva rajapinta",
-    "description" : "# Esittely\nTällä rajapinnalla VAHVA-asianhallintajärjestelmä käynnistää uuden kohteen lisäämisen Hankeikkunaan ja hallinnoi liitoksen sisältöä.\nHankeikkuna hakee VAHVAn \"yleisrajapinnasta\" välitettyjen tunnisteiden avulla tarvitsemansa tiedot asioista, asiakirjoista ja tiedostoista.\nHankeikkunan pitää varautua siihen, että liitoksen päivityksen yhteydessä tiedostoja voidaan lisätä tai poistaa Hankeikkunasta.\n# TODO / huomioita ja kysymyksiä\n* Rajapinta on nyt suomeksi - Hankeikkunan tietomalli on suomeksi. Voisi olla myös englanniksi.\n* Kohdetyyppien kooditus on esimerkeissä keksitty.\n# Muutosloki\n* Lisätty GET /api/v1/vahva-sidos/{caseRecno} -hakuun mahdollisuus hakea myös (migratoidun) asian diaarinumerolla. Tämä mahdollistaa auttavan VAHVA-Hankeikkuna -linkityksen tekemisen myös migratoiduille asioille / Riku Sarlin 2018-08-15\n* Poistettu session-käsittely / Riku Sarlin 2018-08-20 => basic auth\n* Päivitetty HTTP-virhekoodit ja virheiden kuvaukset. / Lasse Laasonen 2019-03-13 * AsiaJulkaisuTapa ja AsiakirjaJulkaisuTapa vaihtoehdot päivitetty. / Lasse Laasonen 2019-03-13\n* Uudelleennimetty AsiakirjaSidos tyypin kentät asiakirjaRecno ja fileId --> recordRecno ja documentRecno  2019-03-28\n* Muutettu GET /api/v1/vahva-sidos/{caseRecno} metodin diaariNro-parametri hanketunnus-parametriksi / Lasse Laasonen 2019-04-11 \n* Muutettu AsiaJulkaisuTapa ja AsiakirjaJulkaisuTapa arvojoukkoja / Lasse Laasonen 2019-04-24\n* Muutettu POST ja PUT /api/v1/vahva-sidos/{caseRecno} metodin bodya, jossa mukana nyt myös toimija / Lasse Laasonen 2019-05-15\n* Lisätty documentVersionRecno AsiakirjaSidokseen / Lasse Laasonen 2019-05-15\n",
+    "description" : "# Esittely\nTällä rajapinnalla VAHVA-asianhallintajärjestelmä käynnistää uuden kohteen lisäämisen Hankeikkunaan ja hallinnoi liitoksen sisältöä.\nHankeikkuna hakee VAHVAn \"yleisrajapinnasta\" välitettyjen tunnisteiden avulla tarvitsemansa tiedot asioista, asiakirjoista ja tiedostoista.\nHankeikkunan pitää varautua siihen, että liitoksen päivityksen yhteydessä tiedostoja voidaan lisätä tai poistaa Hankeikkunasta.\n# TODO / huomioita ja kysymyksiä\n* Rajapinta on nyt suomeksi - Hankeikkunan tietomalli on suomeksi. Voisi olla myös englanniksi.\n* Kohdetyyppien kooditus on esimerkeissä keksitty.\n# Muutosloki\n* Lisätty GET /api/v1/vahva-sidos/{caseRecno} -hakuun mahdollisuus hakea myös (migratoidun) asian diaarinumerolla. Tämä mahdollistaa auttavan VAHVA-Hankeikkuna -linkityksen tekemisen myös migratoiduille asioille / Riku Sarlin 2018-08-15\n* Poistettu session-käsittely / Riku Sarlin 2018-08-20 => basic auth\n* Päivitetty HTTP-virhekoodit ja virheiden kuvaukset. / Lasse Laasonen 2019-03-13 * AsiaJulkaisuTapa ja AsiakirjaJulkaisuTapa vaihtoehdot päivitetty. / Lasse Laasonen 2019-03-13\n* Uudelleennimetty AsiakirjaSidos tyypin kentät asiakirjaRecno ja fileId --> recordRecno ja documentRecno  2019-03-28\n* Muutettu GET /api/v1/vahva-sidos/{caseRecno} metodin diaariNro-parametri hanketunnus-parametriksi / Lasse Laasonen 2019-04-11 \n* Muutettu AsiaJulkaisuTapa ja AsiakirjaJulkaisuTapa arvojoukkoja / Lasse Laasonen 2019-04-24\n* Muutettu POST ja PUT /api/v1/vahva-sidos/{caseRecno} metodin bodya, jossa mukana nyt myös toimija / Lasse Laasonen 2019-05-15\n* Lisätty documentVersionRecno AsiakirjaSidokseen / Lasse Laasonen 2019-05-15\n* Muutettu Toimija#sAMAccountName --> sposti / Lasse Laasonen 2019-05-22\n",
     "contact" : {
       "email" : "lasse.laasonen@ambientia.fi"
     },
@@ -395,12 +395,12 @@
         }
       },
       "Toimija" : {
-        "required" : [ "sAMAccountName" ],
+        "required" : [ "sposti" ],
         "type" : "object",
         "properties" : {
-          "sAMAccountName" : {
+          "sposti" : {
             "type" : "string",
-            "description" : "Henkilön SAMAccountName attribuutti AD:ssa"
+            "description" : "Henkilön tunnisteena käytettävä sähköpostiosoite"
           }
         },
         "description" : "Yksilöivä tieto henkilölle, joka tekee asian viennin VAHVAsta Hankeikkunaan"
