@@ -206,6 +206,31 @@
             }
           }
         }
+      },
+      "delete" : {
+        "summary" : "Poista VAHVA-Hankeikkuna sidos. Poistaa linkityksen VAHVA-asian ja Hankeikkunan hankkeen välillä.\n",
+        "parameters" : [ {
+          "name" : "caseRecno",
+          "in" : "path",
+          "description" : "VAHVAn asian tekninen tunniste, Case.recno",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Sidos poistettu onnistuneesti"
+          },
+          "404" : {
+            "description" : "Sidosta ei ole"
+          },
+          "500" : {
+            "description" : "Virhe kutsun suorituksen aikana"
+          }
+        }
       }
     }
   },
